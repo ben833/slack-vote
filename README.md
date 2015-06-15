@@ -1,2 +1,6 @@
-# node-learning
-Create something with node
+# slack-vote
+A voting bot created with Node
+
+To run this in terminal:
+node index.js
+
