@@ -2,9 +2,9 @@
   "name": "node-learning",
   "version": "1.0.0",
   "description": "Create something with node",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/ben833/node-learning/issues"
   },
-  "homepage": "https://github.com/ben833/node-learning#readme"
+  "homepage": "https://github.com/ben833/node-learning#readme",
+  "dependencies": {
+    "body-parser": "^1.13.1",
+    "express": "^4.12.4"
+  }
 }

@@ -1,4 +1,0 @@
-/*
-  this file lists out votes
-  
-*/

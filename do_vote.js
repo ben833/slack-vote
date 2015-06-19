@@ -1,3 +1,0 @@
-/*
-  this file handles vote actions 
-*/
