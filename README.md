@@ -25,5 +25,5 @@ node server.js
 
 To test this in terminal:
 ```
-mocha test
+npm test
 ```
