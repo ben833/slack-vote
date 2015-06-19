@@ -20,5 +20,10 @@ Greek 1
 
 To run this in terminal:
 ```
-node index.js
+node server.js
+```
+
+To test this in terminal:
+```
+mocha test
 ```
