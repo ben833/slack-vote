@@ -1,10 +1,10 @@
 # slack-vote
 A voting bot created with Node
 
-Slack users will be able to send a message to @vote-bot with their vote. For example: 
+Slack users will be able to start a poll and vote in a slack channel, using Outgoing Integrations. Users will be able to enter these commands in the room: 
 ```
-@vote-bot: start poll "Chinese" "Pizza" "Indian" "Tex Mex"
-@vote-bot: vote pizza
+start poll "Chinese" "Pizza" "Indian" "Tex Mex"
+vote pizza
 ```
 
 The bot will then respond with the results of the vote so far:
@@ -19,8 +19,9 @@ Pizza 2
 Greek 1
 ```
 
+At the end of the voting session, someone will be able to close the poll by entering this in the channel:
 ```
-@vote-bot: close poll
+close poll
 ```
 
 To run this in terminal:
