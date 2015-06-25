@@ -26,8 +26,14 @@ close poll
 
 To run this in terminal:
 ```
+export NODE_ENV=development
 node server.js
 ```
+After the first run, you can simply run
+```
+node server.js
+```
+
 
 To test this in terminal:
 ```
