@@ -3,7 +3,7 @@
 */
 var data = require('./../data.js');
 
-exports.get = function (req, res, next) {
+exports.post = function (req, res, next) {
   console.log('List route.');
   res.json({text: data});
 };
