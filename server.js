@@ -14,7 +14,7 @@ server.use(function (request, response) {
 
 var port = process.env.port || process.env.PORT || 80;
 server.set('port',port);
-var hostname = process.env.hostname || "localhost";
+var hostname = process.env.hostname || "127.0.0.1";
 
 server.on('error', function (error) {
   console.log(error);
