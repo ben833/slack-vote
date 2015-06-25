@@ -1,5 +1,5 @@
 var express = require('express')
-  , router = module.exports = express.Router()
+	, router = module.exports = express.Router()
   , doVote = require('./do_vote.js')
   , listVotes = require('./list_votes.js');
 
