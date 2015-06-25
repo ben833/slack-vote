@@ -2,7 +2,7 @@ var express = require('express')
   , bodyParser = require('body-parser')
   , server = module.exports = express()
   , router = require('./routes/index.js')
-  , _ = require('underscore');
+  //, underscore_ = require('underscore');
 
 
 server.use( bodyParser.json( ) );
