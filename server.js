@@ -13,6 +13,7 @@ server.use(function (request, response) {
 });
 
 var port = process.env.port || process.env.PORT || 3000;
+server.set('port',port);
 var hostname = process.env.hostname || "localhost";
 
 server.on('error', function (error) {
