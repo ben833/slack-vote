@@ -4,8 +4,13 @@ A voting bot created with Node
 Slack users will be able to start a poll and vote in a slack channel, using Outgoing Integrations. Users will be able to enter these commands in the room: 
 ```
 start poll "Chinese" "Pizza" "Indian" "Tex Mex"
+```
+This allows voting to begin and gives people an initial set of choices. People can "write in" a choice by voting for an item not in the initial list.
+
+```
 vote pizza
 ```
+This increments the tally for Pizza. The input should be processed in a case-insensitive way.
 
 The bot will then respond with the results of the vote so far:
 ```
@@ -26,8 +31,14 @@ close poll
 
 To run this in terminal:
 ```
+export NODE_ENV=development
 node server.js
 ```
+After the first run, you can simply run
+```
+node server.js
+```
+
 
 To test this in terminal:
 ```
