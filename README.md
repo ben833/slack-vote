@@ -3,6 +3,7 @@ A voting bot created with Node
 
 Slack users will be able to send a message to @vote-bot with their vote. For example: 
 ```
+@vote-bot: start poll "Chinese" "Pizza" "Indian" "Tex Mex"
 @vote-bot: vote pizza
 ```
 
@@ -16,6 +17,10 @@ Chinese 5
 Indian 4
 Pizza 2
 Greek 1
+```
+
+```
+@vote-bot: close poll
 ```
 
 To run this in terminal:
