@@ -5,4 +5,4 @@ var doVote = require('./do_vote.js');
 router.route('/vote').post(doVote.post);
 
 var listVotes = require('./list_votes.js');
-router.route('/votes').get(listVotes.get);
+router.route('/votes').post(listVotes.post);
