@@ -18,6 +18,7 @@
   "homepage": "https://github.com/ben833/node-learning#readme",
   "dependencies": {
     "body-parser": "^1.13.1",
-    "express": "^4.12.4"
+    "express": "^4.12.4",
+    "node-slackbot": "^0.0.6"
   }
 }
