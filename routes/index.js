@@ -5,3 +5,4 @@ var express = require('express')
 
 router.route('/vote').post(doVote.post);
 router.route('/votes').post(listVotes.post);
+router.route('/start').post();
