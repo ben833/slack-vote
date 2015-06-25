@@ -1,19 +1,9 @@
 /*
   This lists out current votes.
 */
-var poll = {
-  poolName: 'What\'s For Lunch?',
-  votes: [
-    { voteName: 'Chinese',
-      voteCount: 12
-    },
-    { voteName: 'Cuban',
-      voteCount: 9
-    }
-  ]
-};
+var data = require('./../data.js');
 
 exports.get = function (req, res, next) {
   console.log('List route.');
-  res.json({text: poll});
+  res.json({text: data});
 };
