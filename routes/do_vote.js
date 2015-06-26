@@ -9,13 +9,19 @@ var data = require('./../data.js')
   , voteMatch = false;
 
 function printPoll(data) {
+
+  // the string that separates poll items when printing 
   separator = ' \n';
+  
+  // build the output
   pollResults = 'Thanks for voting on: ' + data.poolName + ' ';
-  pollResults += 'Current Results: \n';
+  pollResults += '\nCurrent Results: \n';
   _.each(data.votes, function(vote) {
     formattedVoteName = vote.voteName.capitalizeFirstLetter();
-    pollResults += formattedVoteName + ': ' + vote.voteCount + ' \n';
+    pollResults += formattedVoteName + ': ' + vote.voteCount + separator;
   });
+  
+  // Remove the last separator (newline) to avoid extra empty line
   lastIndexOfSeparator = pollResults.lastIndexOf(separator);
   if (lastIndexOfSeparator > separator.length) {
     pollResults = pollResults.substring(0, lastIndexOfSeparator);
