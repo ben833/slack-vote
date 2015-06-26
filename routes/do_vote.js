@@ -4,16 +4,22 @@ var data = require('./../data.js')
   , pollResults = ''
   , voteText = ''
   , triggerWord = ''
+  , formattedVoteName = ''
   , voteMatch = false;
 
 function printPoll(data) {
   pollResults = 'Thanks for voting on: ' + data.poolName + '. ';
   pollResults += 'Current Results: ';
   _.each(data.votes, function(vote) {
-    pollResults += vote.voteName + ': ' + vote.voteCount + ', ';
+    formattedVoteName = vote.voteName.capitalizeFirstLetter();
+    pollResults += formattedVoteName + ': ' + vote.voteCount + ', ';
   });
   return pollResults;
 };
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 
 /*
   Handle voting actions
