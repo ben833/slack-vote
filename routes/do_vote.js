@@ -9,7 +9,7 @@ var data = require('./../data.js')
 
 function printPoll(data) {
   pollResults = 'Thanks for voting on: ' + data.poolName + '. ';
-  pollResults += 'Current Results: ';
+  pollResults += 'Current Results: \n';
   _.each(data.votes, function(vote) {
     formattedVoteName = vote.voteName.capitalizeFirstLetter();
     pollResults += formattedVoteName + ': ' + vote.voteCount + ', ';
