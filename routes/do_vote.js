@@ -29,17 +29,16 @@ function printPoll(data) {
   return pollResults;
 };
 
+/*
+  Capitalize the first letter of each word
+*/
 String.prototype.capitalizeFirstLetter = function() {
-
   var pieces = this.split(" ");
-  for ( var i = 0; i < pieces.length; i++ )
-  {
-      var j = pieces[i].charAt(0).toUpperCase();
-      pieces[i] = j + pieces[i].substr(1);
+  for (var i = 0; i < pieces.length; i++) {
+    var j = pieces[i].charAt(0).toUpperCase();
+    pieces[i] = j + pieces[i].substr(1);
   }
   return pieces.join(" ");
-
-  // return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 /*
