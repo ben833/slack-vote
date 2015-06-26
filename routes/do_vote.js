@@ -5,20 +5,36 @@ var data = require('./../data.js')
   , voteText = ''
   , triggerWord = ''
   , formattedVoteName = ''
+  , lastIndexOfSeparator = 0
   , voteMatch = false;
 
 function printPoll(data) {
-  pollResults = 'Thanks for voting on: ' + data.poolName + '. ';
+  separator = ' \n';
+  pollResults = 'Thanks for voting on: ' + data.poolName + ' ';
   pollResults += 'Current Results: \n';
   _.each(data.votes, function(vote) {
     formattedVoteName = vote.voteName.capitalizeFirstLetter();
-    pollResults += formattedVoteName + ': ' + vote.voteCount + ', ';
+    pollResults += formattedVoteName + ': ' + vote.voteCount + ' \n';
   });
+  lastIndexOfSeparator = pollResults.lastIndexOf(separator);
+  if (lastIndexOfSeparator > separator.length) {
+    pollResults = pollResults.substring(0, lastIndexOfSeparator);
+  }
   return pollResults;
 };
 
 String.prototype.capitalizeFirstLetter = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
+
+    var pieces = this.split(" ");
+    for ( var i = 0; i < pieces.length; i++ )
+    {
+        var j = pieces[i].charAt(0).toUpperCase();
+        pieces[i] = j + pieces[i].substr(1);
+    }
+    return pieces.join(" ");
+
+
+    // return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 /*
