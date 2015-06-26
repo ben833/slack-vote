@@ -36,7 +36,7 @@ exports.post = function (req, res, next) {
   });
 
   if (!voteMatch) {
-    console.log('No match, creating new poll option.');
+    console.log('No match, creating new poll option for: ' + voteText);
     newVote = {
       voteName: voteText,
       voteCount: 1
@@ -45,6 +45,7 @@ exports.post = function (req, res, next) {
   }
 
   slackRes = printPoll(data);
+  voteMatch = false;
 
   res.json({text: slackRes});
 };
