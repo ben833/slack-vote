@@ -1,11 +1,11 @@
 var poll = {
   poolName: 'What\'s For Lunch?',
   votes: [
-    { voteName: 'Chinese',
-      voteCount: 12
+    { voteName: 'chinese',
+      voteCount: 0
     },
-    { voteName: 'Cuban',
-      voteCount: 9
+    { voteName: 'cuban',
+      voteCount: 0
     }
   ]
 };

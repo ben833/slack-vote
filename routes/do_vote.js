@@ -1,9 +1,50 @@
+var data = require('./../data.js')
+  , _ = require('underscore')
+  , slackRes = ''
+  , pollResults = ''
+  , voteText = ''
+  , triggerWord = ''
+  , voteMatch = false;
+
+function printPoll(data) {
+  pollResults = 'Thanks for voting on: ' + data.poolName + '. ';
+  pollResults += 'Current Results: ';
+  _.each(data.votes, function(vote) {
+    pollResults += vote.voteName + ': ' + vote.voteCount + ', ';
+  });
+  return pollResults;
+};
+
 /*
-  this file handles vote actions 
+  Handle voting actions
 */
+exports.post = function (req, res, next) {
 
+  voteText = req.body.text;
+  triggerWord = req.body.trigger_word;
+  voteText = voteText.replace(triggerWord + ' ','').toLowerCase();
 
+  console.log('Incoming vote for: ' + voteText);
 
-exports.post = function (request, response, next) {
-    response.json({text: "ok, got it."});
+  var count = 0;
+  _.each(data.votes, function(vote) {
+    if (voteText === vote.voteName) {
+      console.log('vote name matched!');
+      vote.voteCount = vote.voteCount + 1;
+      voteMatch = true;
+    }
+  });
+
+  if (!voteMatch) {
+    console.log('No match, creating new poll option.');
+    newVote = {
+      voteName: voteText,
+      voteCount: 1
+    };
+    data.votes.push(newVote);
+  }
+
+  slackRes = printPoll(data);
+
+  res.json({text: slackRes});
 };
