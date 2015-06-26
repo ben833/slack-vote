@@ -1,5 +1,5 @@
 var poll = {
-  poolName: 'What\'s For Lunch?',
+  pollName: 'What\'s For Lunch?',
   votes: [
     { voteName: 'chinese',
       voteCount: 0

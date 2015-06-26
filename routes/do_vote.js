@@ -10,17 +10,17 @@ var data = require('./../data.js')
 
 function printPoll(data) {
 
-  // the string that separates poll items when printing 
+  // the string that separates poll items when printing
   separator = ' \n';
-  
+
   // build the output
-  pollResults = 'Thanks for voting on: ' + data.poolName + ' ';
+  pollResults = 'Thanks for voting on: ' + data.pollName + ' ';
   pollResults += '\nCurrent Results: \n';
   _.each(data.votes, function(vote) {
     formattedVoteName = vote.voteName.capitalizeFirstLetter();
     pollResults += formattedVoteName + ': ' + vote.voteCount + separator;
   });
-  
+
   // Remove the last separator (newline) to avoid extra empty line
   lastIndexOfSeparator = pollResults.lastIndexOf(separator);
   if (lastIndexOfSeparator > separator.length) {
@@ -31,16 +31,15 @@ function printPoll(data) {
 
 String.prototype.capitalizeFirstLetter = function() {
 
-    var pieces = this.split(" ");
-    for ( var i = 0; i < pieces.length; i++ )
-    {
-        var j = pieces[i].charAt(0).toUpperCase();
-        pieces[i] = j + pieces[i].substr(1);
-    }
-    return pieces.join(" ");
+  var pieces = this.split(" ");
+  for ( var i = 0; i < pieces.length; i++ )
+  {
+      var j = pieces[i].charAt(0).toUpperCase();
+      pieces[i] = j + pieces[i].substr(1);
+  }
+  return pieces.join(" ");
 
-
-    // return this.charAt(0).toUpperCase() + this.slice(1);
+  // return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 /*
