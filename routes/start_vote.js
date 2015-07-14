@@ -22,5 +22,4 @@ exports.post = function (req, res, next) {
     ts = Math.floor(Date.now() / 1000)
     r.set('key' + ts, JSON.stringify(data) );
     console.log('saved data');
-
 };
