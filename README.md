@@ -3,7 +3,10 @@ A voting bot created with Node
 
 Slack users will be able to start a poll and vote in a slack channel, using Outgoing Integrations. Users will be able to enter these commands in the room: 
 ```
-start poll "Chinese" "Pizza" "Indian" "Tex Mex"
+start poll What's for Lunch?
+```
+```
+options "Chinese" "Indian" "South African"
 ```
 This allows voting to begin and gives people an initial set of choices. People can "write in" a choice by voting for an item not in the initial list.
 
