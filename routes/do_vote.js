@@ -1,5 +1,6 @@
 var data = require('./../data.js')
   , _ = require('underscore')
+  , tally = require('./../tally.js')
   , slackRes = ''
   , pollResults = ''
   , voteText = ''
@@ -7,27 +8,6 @@ var data = require('./../data.js')
   , formattedVoteName = ''
   , lastIndexOfSeparator = 0
   , voteMatch = false;
-
-function printPoll(data) {
-
-  // the string that separates poll items when printing
-  separator = ' \n';
-
-  // build the output
-  pollResults = 'Thanks for voting on: ' + data.pollName + ' ';
-  pollResults += '\nCurrent Results: \n';
-  _.each(data.votes, function(vote) {
-    formattedVoteName = vote.voteName.capitalizeFirstLetter();
-    pollResults += formattedVoteName + ': ' + vote.voteCount + separator;
-  });
-
-  // Remove the last separator (newline) to avoid extra empty line
-  lastIndexOfSeparator = pollResults.lastIndexOf(separator);
-  if (lastIndexOfSeparator > separator.length) {
-    pollResults = pollResults.substring(0, lastIndexOfSeparator);
-  }
-  return pollResults;
-};
 
 /*
   Capitalize the first letter of each word
@@ -70,7 +50,7 @@ exports.post = function (req, res, next) {
     data.votes.push(newVote);
   }
 
-  slackRes = printPoll(data);
+  slackRes = tally.printPoll(data);
   voteMatch = false;
 
   res.json({text: slackRes});
