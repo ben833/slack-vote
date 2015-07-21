@@ -47,3 +47,8 @@ To test this in terminal:
 ```
 npm test
 ```
+
+# Local Development
+* Install node
+* `sudo npm install`
+* Install redis locally - instructions here http://redis.io/topics/quickstart
