@@ -52,3 +52,5 @@ npm test
 * Install node
 * `sudo npm install`
 * Install redis locally - instructions here http://redis.io/topics/quickstart
+* To start redis, on the command line - `redis-server`
+
