@@ -9,6 +9,8 @@ var data = require('./../data.js')
   , lastIndexOfSeparator = 0
   , voteMatch = false;
 
+// TODO GET ACTIVE POLL
+
 /*
   Capitalize the first letter of each word
 */
@@ -29,7 +31,6 @@ exports.post = function (req, res, next) {
   voteText = req.body.text;
   triggerWord = req.body.trigger_word;
   voteText = voteText.replace(triggerWord + ' ','').toLowerCase();
-
   console.log('Incoming vote for: ' + voteText);
 
   var count = 0;
@@ -49,6 +50,8 @@ exports.post = function (req, res, next) {
     };
     data.votes.push(newVote);
   }
+
+  // TODO SET ACTIVE POLL WITH NEW RESULTS
 
   slackRes = tally.printPoll(data);
   voteMatch = false;

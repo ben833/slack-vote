@@ -1,4 +1,7 @@
-var data = require('./../data.js')
+var data = ''
+  , dbActions = require('./../persist.js')
+  , tally = require('./../tally.js')
+  , activePoll = ''
   , redis = require('redis')
   , pollnameText = ''
   , triggerWord = ''
@@ -10,15 +13,14 @@ var data = require('./../data.js')
 
 exports.post = function (req, res, next) {
 
-  console.log('List route.');
+  console.log('Start vote route.');
 
+  // Start poll data
   pollnameText = req.body.text;
   triggerWord = req.body.trigger_word;
   pollnameText = pollnameText.replace(triggerWord + ' ','');
   data.pollName = pollnameText;
   data.votes = [];
-  data.status = 1;
-  console.log('start poll ' + pollnameText);
 
   /*
    * Persist new poll to reddis
@@ -30,13 +32,46 @@ exports.post = function (req, res, next) {
   } else {
     client = redis.createClient();
   }
+
   client.on('connect', function() {
+
     console.log('connected to reddis');
-    client.set('key' + ts, JSON.stringify(data));
-    console.log('saved new poll data');
+
+    // Fetch current active poll id
+    dbActions.getActivePollId(listActivePoll);
+    function listActivePoll(pollId) {
+      console.log('We got the active poll from callback! Pollid: ' + pollId);
+      dbActions.getPoll(pollId, printActivePoll);
+    }
+
+    // Get active poll data and print results with sad 'poll is closed' note
+    function printActivePoll(data) {
+      slackRes = 'Closing Active Poll, Here are the results.\n' + tally.printPoll(JSON.parse(data));
+      console.log(slackRes);
+    }
+
+    // Set active poll id
+    dbActions.setActivePoll('poll' + ts, setActivePoll);
+    function setActivePoll(data) {
+      console.log('hey, the new id is: ' + 'poll' + ts + ' Im gonna go ahead and set this for ya');
+      dbActions.setPoll('poll' + ts, JSON.stringify(data), printNewPoll);
+    }
+
+    // Get active poll data and print results with sad 'poll is closed' note
+    function printNewPoll() {
+      console.log('oh hai hans');
+      console.log('hey, the new id is: ' + 'poll' + ts);
+      dbActions.getPoll('poll' + ts, noSeriouslyPrintThisNoise);
+    }
+
+    function noSeriouslyPrintThisNoise(data) {
+      console.log('oh hans, so much nesting: ' + data);
+    }
+
   });
 
-  slackRes = data.pollName + '\n' + "enter vote _choice_ to submit your vote";
+  console.log('slackres: ' + slackRes);
+  //slackRes = data.pollName + '\n' + "enter vote _choice_ to submit your vote";
   res.json({text: slackRes});
 
 };

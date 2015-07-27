@@ -1,5 +1,3 @@
-
-
 _ = require('underscore');
 
 var tally = {
@@ -26,6 +24,4 @@ var tally = {
   }
 };
 
-
 module.exports = tally;
-

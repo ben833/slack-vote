@@ -1,7 +1,7 @@
 # slack-vote
 A voting bot created with Node
 
-Slack users will be able to start a poll and vote in a slack channel, using Outgoing Integrations. Users will be able to enter these commands in the room: 
+Slack users will be able to start a poll and vote in a slack channel, using Outgoing Integrations. Users will be able to enter these commands in the room:
 ```
 start poll "Chinese" "Pizza" "Indian" "Tex Mex"
 ```
@@ -44,3 +44,5 @@ To test this in terminal:
 ```
 npm test
 ```
+
+//redis-cli -h carp.redistogo.com -p 9740 -a 7e7fd93395c416e4e8c0c7bcebf769fe
