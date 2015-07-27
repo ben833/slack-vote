@@ -3,7 +3,10 @@ A voting bot created with Node
 
 Slack users will be able to start a poll and vote in a slack channel, using Outgoing Integrations. Users will be able to enter these commands in the room:
 ```
-start poll "Chinese" "Pizza" "Indian" "Tex Mex"
+start poll What's for Lunch?
+```
+```
+options "Chinese" "Indian" "South African"
 ```
 This allows voting to begin and gives people an initial set of choices. People can "write in" a choice by voting for an item not in the initial list.
 
@@ -45,4 +48,9 @@ To test this in terminal:
 npm test
 ```
 
-//redis-cli -h carp.redistogo.com -p 9740 -a 7e7fd93395c416e4e8c0c7bcebf769fe
+# Local Development
+* Install node
+* `sudo npm install`
+* Install redis locally - instructions here http://redis.io/topics/quickstart
+* To start redis, on the command line - `redis-server`
+
