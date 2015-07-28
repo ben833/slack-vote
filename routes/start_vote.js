@@ -1,4 +1,4 @@
-var data = ''
+var poll = ''
   , dbActions = require('./../persist.js')
   , tally = require('./../tally.js')
   , activePoll = ''
@@ -9,6 +9,7 @@ var data = ''
   , slackRes = ''
   , client = ''
   , rtg = ''
+  , newPollID = ''
   , ts = Math.floor(Date.now() / 1000);
 
 exports.post = function (req, res, next) {
@@ -19,8 +20,8 @@ exports.post = function (req, res, next) {
   pollnameText = req.body.text;
   triggerWord = req.body.trigger_word;
   pollnameText = pollnameText.replace(triggerWord + ' ','');
-  data.pollName = pollnameText;
-  data.votes = [];
+  poll = {'pollName': pollnameText,
+    'votes': []};
 
   /*
    * Persist new poll to reddis
@@ -34,39 +35,43 @@ exports.post = function (req, res, next) {
   }
 
   client.on('connect', function() {
+    newPollID = 'poll' + ts;
 
-    console.log('connected to reddis');
+    console.log('connected to redis');
+    //console.log(poll.pollName);
 
     // Fetch current active poll id
     dbActions.getActivePollId(listActivePoll);
     function listActivePoll(pollId) {
-      console.log('We got the active poll from callback! Pollid: ' + pollId);
+      console.log('Current Active Pollid: ' + pollId);
       dbActions.getPoll(pollId, printActivePoll);
-    }
+    } 
 
-    // Get active poll data and print results with sad 'poll is closed' note
-    function printActivePoll(data) {
-      slackRes = 'Closing Active Poll, Here are the results.\n' + tally.printPoll(JSON.parse(data));
-      console.log(slackRes);
-    }
+    dbActions.disablePolls(); // CLOSE THE POLL
 
-    // Set active poll id
-    dbActions.setActivePoll('poll' + ts, setActivePoll);
+    // Set new poll with an active poll id
+    dbActions.setActivePoll(newPollID, setActivePoll);
     function setActivePoll(data) {
-      console.log('hey, the new id is: ' + 'poll' + ts + ' Im gonna go ahead and set this for ya');
-      dbActions.setPoll('poll' + ts, JSON.stringify(data), printNewPoll);
+      //console.log('hey, the new id is: ' + newPollID + ' Im gonna go ahead and set this for ya');
+      dbActions.setPoll(newPollID, poll.pollName, printNewPoll);
     }
 
     // Get active poll data and print results with sad 'poll is closed' note
     function printNewPoll() {
-      console.log('oh hai hans');
-      console.log('hey, the new id is: ' + 'poll' + ts);
-      dbActions.getPoll('poll' + ts, noSeriouslyPrintThisNoise);
+      console.log('New poll is set up with the ID: ' + newPollID);
+      dbActions.getPoll(newPollID, noSeriouslyPrintThisNoise);
     }
 
     function noSeriouslyPrintThisNoise(data) {
-      console.log('oh hans, so much nesting: ' + data);
+      console.log('Your poll is set up. Please start voting for ' + data);
     }
+
+    // Get active poll data and print results with sad 'poll is closed' note
+    function printActivePoll(data) {
+      slackRes = 'Closing Active Poll, Here are the results. (todo: print results of now-closed poll)\n'; // + tally.printPoll(JSON.parse(data));
+      // console.log("in printActivePoll: " + slackRes);
+    }
+
 
   });
 

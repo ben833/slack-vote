@@ -46,16 +46,16 @@ var dbActions = {
   },
   disablePolls: function() {
     client.set('activePoll', null, function (err, reply) {
-      console.log(reply.toString());
+      //console.log("in disable polls: " + reply);
     });
   },
   // Get poll from id
   getPoll: function(pollId, callback) {
     client.get(pollId, function (err, reply) {
-      console.log('fetching poll for you, id: ' + pollId);
+      //console.log('fetching poll for you, id: ' + pollId);
       if (reply) {
-        console.log('this get should not just be OK: ' + reply.toString());
-        callback(reply.toString());
+        //console.log('this get should not just be OK: ' + reply.toString());
+        callback(reply);
       }
     });
   }
