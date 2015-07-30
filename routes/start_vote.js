@@ -59,24 +59,25 @@ exports.post = function (req, res, next) {
     // Get active poll data and print results with sad 'poll is closed' note
     function printNewPoll() {
       console.log('New poll is set up with the ID: ' + newPollID);
-      dbActions.getPoll(newPollID, noSeriouslyPrintThisNoise);
+      dbActions.getPoll(newPollID, confirmNewPoll);
     }
 
-    function noSeriouslyPrintThisNoise(data) {
-      console.log('Your poll is set up. Please start voting for ' + data);
+    function confirmNewPoll(data) {
+      slackRes = 'Your poll is set up. Please start voting for ' + data;
+      console.log('confirmNewPoll: Your poll is set up. Please start voting for ' + data);
+      console.log('slackres: ' + slackRes);
+      //slackRes = data.pollName + '\n' + "enter vote _choice_ to submit your vote";
+      res.json({text: slackRes});
+
     }
 
     // Get active poll data and print results with sad 'poll is closed' note
     function printActivePoll(data) {
-      slackRes = 'Closing Active Poll, Here are the results. (todo: print results of now-closed poll)\n'; // + tally.printPoll(JSON.parse(data));
+      slackRes = 'Closing Active Poll. Here were the results of the now-closed poll.\n'; // + tally.printPoll(JSON.parse(data));
       // console.log("in printActivePoll: " + slackRes);
     }
 
 
   });
-
-  console.log('slackres: ' + slackRes);
-  //slackRes = data.pollName + '\n' + "enter vote _choice_ to submit your vote";
-  res.json({text: slackRes});
 
 };
