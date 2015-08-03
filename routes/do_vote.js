@@ -24,7 +24,7 @@ String.prototype.capitalizeFirstLetter = function() {
     pieces[i] = j + pieces[i].substr(1);
   }
   return pieces.join(" ");
-}
+};
 
 /*
   Handle voting actions
@@ -40,23 +40,24 @@ exports.post = function (req, res, next) {
   function getActivePoll(pollId) {
     console.log('Current Active Pollid: ' + pollId);
     dbActions.getPoll(pollId, setData);
-    activePoll = pollId
+    activePoll = pollId;
   }
 
   function setData(poll_string) {
     var pollTitleOnly = false;
-    try{
+    try {
         data = JSON.parse(poll_string);
     } catch (err) {
-        if (err && (err.name == 'SyntaxError')){
+        if (err && (err.name == 'SyntaxError')) {
           // if active poll is not json parse-able, assume it's just the poll title
           pollTitleOnly = true;
         } else {
           throw err;
         }
     }
+
     console.log('poll prior to vote: ' + poll_string);
-    if (pollTitleOnly){
+    if (pollTitleOnly) {
       pollnameText = poll_string;
       poll =  {
         pollName: pollnameText,
