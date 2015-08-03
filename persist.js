@@ -39,6 +39,7 @@ var dbActions = {
   // Set poll data
   setPoll: function(pollKey, pollData, callback) {
     client.set(pollKey, pollData, function (err, reply) {
+    // should this pass along something more useful than "ok" ?
       if (reply) {
         callback(reply);
       }
