@@ -90,8 +90,6 @@ exports.post = function (req, res, next) {
 
   function handleResults(poll) {
     slackRes = tally.printPoll(data);
-    voteMatch = false;
-
     res.json({text: slackRes});
   }
 
