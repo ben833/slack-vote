@@ -13,21 +13,20 @@ var poll = ''
   , data = undefined
   , voteMatch = false;
 
-
 /*
-  Capitalize the first letter of each word
+  Capitalize the first letter of each word.
 */
 String.prototype.capitalizeFirstLetter = function() {
-  var pieces = this.split(" ");
+  var pieces = this.split(' ');
   for (var i = 0; i < pieces.length; i++) {
     var j = pieces[i].charAt(0).toUpperCase();
     pieces[i] = j + pieces[i].substr(1);
   }
-  return pieces.join(" ");
+  return pieces.join(' ');
 };
 
 /*
-  Handle voting actions
+  Handle voting actions.
 */
 exports.post = function (req, res, next) {
 
