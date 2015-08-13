@@ -9,7 +9,7 @@ var redis = require('redis')
   , ts = Math.floor(Date.now() / 1000);
 
 /*
- * Set correct environment for redis
+ * Set correct environment for redis.
  */
 if (process.env.REDISTOGO_URL) {
   rtg = require('url').parse(process.env.REDISTOGO_URL);
@@ -19,8 +19,13 @@ if (process.env.REDISTOGO_URL) {
   client = redis.createClient();
 }
 
+/*
+ * TBD: there should be error handling on all of these to handle no reply responses.
+ */
 var dbActions = {
-  // Set active poll id
+  /*
+   * Set active poll id.
+   */
   setActivePoll: function(pollKey, callback) {
     client.set('activePoll', pollKey, function (err, reply) {
       if (reply) {
@@ -28,28 +33,43 @@ var dbActions = {
       }
     });
   },
-  // Get active poll id
+  /*
+   * Get active poll id.
+   */
   getActivePollId: function(callback) {
     client.get('activePoll', function (err, reply) {
       if (reply) {
         callback(reply);
       }
+      else {
+        callback(null);
+      }
     });
   },
-  // Set poll data
+  /*
+   * Set poll data.
+   */
   setPoll: function(pollKey, pollData, callback) {
     client.set(pollKey, pollData, function (err, reply) {
+    // should this pass along something more useful than "ok" ?
       if (reply) {
         callback(reply);
       }
     });
   },
-  disablePolls: function() {
-    client.set('activePoll', null, function (err, reply) {
-      //console.log("in disable polls: " + reply);
+  /*
+   * Disable all polls.
+   */
+  disablePolls: function(callback) {
+    client.set('activePoll', '', function (err, reply) {
+      if (reply) {
+        callback(reply);
+      }
     });
   },
-  // Get poll from id
+  /*
+   * Get poll from id.
+   */
   getPoll: function(pollId, callback) {
     client.get(pollId, function (err, reply) {
       //console.log('fetching poll for you, id: ' + pollId);

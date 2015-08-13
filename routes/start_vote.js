@@ -16,15 +16,19 @@ exports.post = function (req, res, next) {
 
   console.log('Start vote route.');
 
-  // Start poll data
+  /*
+   * Start poll data.
+   */
   pollnameText = req.body.text;
   triggerWord = req.body.trigger_word;
   pollnameText = pollnameText.replace(triggerWord + ' ','');
-  poll = {'pollName': pollnameText,
-    'votes': []};
+  poll = {
+    'pollName': pollnameText,
+    'votes': []
+  };
 
   /*
-   * Persist new poll to reddis
+   * Persist new poll to reddis.
    */
   if (process.env.REDISTOGO_URL) {
     rtg = require('url').parse(process.env.REDISTOGO_URL);
@@ -35,48 +39,45 @@ exports.post = function (req, res, next) {
   }
 
   client.on('connect', function() {
-    newPollID = 'poll' + ts;
 
     console.log('connected to redis');
-    //console.log(poll.pollName);
+    newPollID = 'poll' + ts;
 
-    // Fetch current active poll id
+    /*
+     * Fetch and print current active poll.
+     */
     dbActions.getActivePollId(listActivePoll);
     function listActivePoll(pollId) {
       console.log('Current Active Pollid: ' + pollId);
-      dbActions.getPoll(pollId, printActivePoll);
-    } 
-
-    dbActions.disablePolls(); // CLOSE THE POLL
-
-    // Set new poll with an active poll id
-    dbActions.setActivePoll(newPollID, setActivePoll);
-    function setActivePoll(data) {
-      //console.log('hey, the new id is: ' + newPollID + ' Im gonna go ahead and set this for ya');
-      dbActions.setPoll(newPollID, poll.pollName, printNewPoll);
+      if (pollId === null) {
+        console.log('There is no current active poll, setting up new poll.');
+      } else {
+        console.log('Current poll is closing.');
+        dbActions.getPoll(pollId, printActivePoll);
+      }
+    }
+    function printActivePoll(data) {
+      slackRes = 'Closing Active Poll. Here were the results of the now-closed poll.\n' + tally.printPoll(JSON.parse(data)) + '\n';
     }
 
-    // Get active poll data and print results with sad 'poll is closed' note
+    /*
+     * Set new poll with the active poll id.
+     * Print confirmation and vote message.
+     */
+    dbActions.setActivePoll(newPollID, setActivePoll);
+    function setActivePoll() {
+      console.log('Setting up new poll with ID: ' + newPollID);
+      dbActions.setPoll(newPollID, JSON.stringify(poll), printNewPoll);
+    }
     function printNewPoll() {
       console.log('New poll is set up with the ID: ' + newPollID);
       dbActions.getPoll(newPollID, confirmNewPoll);
     }
-
     function confirmNewPoll(data) {
-      slackRes = 'Your poll is set up. Please start voting for ' + data;
-      console.log('confirmNewPoll: Your poll is set up. Please start voting for ' + data);
-      console.log('slackres: ' + slackRes);
-      //slackRes = data.pollName + '\n' + "enter vote _choice_ to submit your vote";
+      slackRes += '\nYour poll is set up. Please start voting for ' + tally.printPoll(JSON.parse(data));
+      console.log('confirmNewPoll: ' + slackRes);
       res.json({text: slackRes});
-
     }
-
-    // Get active poll data and print results with sad 'poll is closed' note
-    function printActivePoll(data) {
-      slackRes = 'Closing Active Poll. Here were the results of the now-closed poll.\n'; // + tally.printPoll(JSON.parse(data));
-      // console.log("in printActivePoll: " + slackRes);
-    }
-
 
   });
 
