@@ -37,8 +37,8 @@ var dbActions = {
    * Get active poll id.
    */
   getActivePollId: function(channelID, callback) {
-    console.log("Channel ID is: " + channelID);
-    client.get(('*_' + channelID), function (err, reply) {
+    console.log('Channel ID is: ' + channelID);
+    client.get('*' + channelID, function (err, reply) {
       if (reply) {
         callback(reply);
       }

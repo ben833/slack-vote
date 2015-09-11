@@ -48,7 +48,7 @@ exports.post = function (req, res, next) {
     /*
      * Fetch and print current active poll.
      */
-    dbActions.getActivePollId(listActivePoll);
+    dbActions.getActivePollId(channelId, listActivePoll);
     function listActivePoll(pollId) {
       console.log('Current Active Pollid: ' + pollId);
       if (pollId === null) {
