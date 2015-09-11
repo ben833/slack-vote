@@ -5,6 +5,7 @@ var poll = ''
   , redis = require('redis')
   , pollnameText = ''
   , triggerWord = ''
+  , channelId = ''
   , pollnameText = ''
   , slackRes = ''
   , client = ''
@@ -21,6 +22,7 @@ exports.post = function (req, res, next) {
    */
   pollnameText = req.body.text;
   triggerWord = req.body.trigger_word;
+  channelId = req.body.channel_id;
   pollnameText = pollnameText.replace(triggerWord + ' ','');
   poll = {
     'pollName': pollnameText,
@@ -41,7 +43,7 @@ exports.post = function (req, res, next) {
   client.on('connect', function() {
 
     console.log('connected to redis');
-    newPollID = 'poll' + ts;
+    newPollID = 'poll' + ts + '_' + channelId;
 
     /*
      * Fetch and print current active poll.
