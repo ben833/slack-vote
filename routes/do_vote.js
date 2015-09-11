@@ -7,6 +7,7 @@ var poll = ''
   , slackRes = ''
   , pollResults = ''
   , voteText = ''
+  , channelID = ''
   , triggerWord = ''
   , formattedVoteName = ''
   , lastIndexOfSeparator = 0
@@ -33,9 +34,11 @@ exports.post = function (req, res, next) {
   voteText = req.body.text;
   triggerWord = req.body.trigger_word;
   voteText = voteText.replace(triggerWord + ' ','').toLowerCase();
+  channelID = req.body.channel_id;
   console.log('Incoming vote for: ' + voteText);
-
-  dbActions.getActivePollId(getActivePoll);
+  console.log('in do_vote, channelID is: ' + channelID + '\n');
+  
+  dbActions.getActivePollId(channelID, getActivePoll);
   function getActivePoll(pollId) {
     console.log('Current Active Pollid: ' + pollId);
     dbActions.getPoll(pollId, setData);
