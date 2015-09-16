@@ -13,7 +13,7 @@ var poll = ''
   , newPollID = ''
   , ts = Math.floor(Date.now() / 1000);
 
-exports.post = function (req, res, next) {
+exports.post = function(req, res, next) {
 
   console.log('Start vote route.');
 
@@ -43,41 +43,35 @@ exports.post = function (req, res, next) {
   client.on('connect', function() {
 
     console.log('connected to redis');
-    newPollID = 'poll' + ts + '_' + channelId;
+    newPollID = 'activePoll_' + channelId;
 
     /*
      * Fetch and print current active poll.
      */
-    dbActions.getActivePollId(channelId, listActivePoll);
-    function listActivePoll(pollId) {
-      console.log('Current Active Pollid: ' + pollId);
-      if (pollId === null) {
+    dbActions.getPoll(newPollID, listActivePoll);
+    function listActivePoll(data) {
+      console.log('Current Active Poll: ' + data);
+      if (data === null) {
         console.log('There is no current active poll, setting up new poll.');
       } else {
         console.log('Current poll is closing.');
-        dbActions.getPoll(pollId, printActivePoll);
+        slackRes = 'Closing Active Poll. Here were the results of the now-closed poll.\n' + tally.printPoll(JSON.parse(data)) + '\n';
       }
-    }
-    function printActivePoll(data) {
-      slackRes = 'Closing Active Poll. Here were the results of the now-closed poll.\n' + tally.printPoll(JSON.parse(data)) + '\n';
     }
 
     /*
      * Set new poll with the active poll id.
      * Print confirmation and vote message.
      */
-    dbActions.setActivePoll(newPollID, setActivePoll);
-    function setActivePoll() {
-      console.log('Setting up new poll with ID: ' + newPollID);
-      dbActions.setPoll(newPollID, JSON.stringify(poll), printNewPoll);
-    }
+    console.log('Setting up new poll with ID: ' + newPollID);
+    dbActions.setPoll(newPollID, JSON.stringify(poll), printNewPoll);
+
     function printNewPoll() {
       console.log('New poll is set up with the ID: ' + newPollID);
       dbActions.getPoll(newPollID, confirmNewPoll);
     }
     function confirmNewPoll(data) {
       slackRes += '\nYour poll is set up. Please start voting for ' + tally.printPoll(JSON.parse(data));
-      console.log('confirmNewPoll: ' + slackRes);
       res.json({text: slackRes});
     }
 

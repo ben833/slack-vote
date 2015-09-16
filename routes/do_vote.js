@@ -9,14 +9,12 @@ var poll = ''
   , voteText = ''
   , channelID = ''
   , triggerWord = ''
-  , formattedVoteName = ''
-  , lastIndexOfSeparator = 0
   , data = undefined
   , voteMatch = false;
 
 /*
-  Capitalize the first letter of each word.
-*/
+ * Capitalize the first letter of each word.
+ */
 String.prototype.capitalizeFirstLetter = function() {
   var pieces = this.split(' ');
   for (var i = 0; i < pieces.length; i++) {
@@ -27,70 +25,48 @@ String.prototype.capitalizeFirstLetter = function() {
 };
 
 /*
-  Handle voting actions.
-*/
+ * Handle voting actions.
+ */
 exports.post = function (req, res, next) {
 
   voteText = req.body.text;
   triggerWord = req.body.trigger_word;
   voteText = voteText.replace(triggerWord + ' ','').toLowerCase();
-  channelID = req.body.channel_id;
-  console.log('Incoming vote for: ' + voteText);
-  console.log('in do_vote, channelID is: ' + channelID + '\n');
-  
-  dbActions.getActivePollId(channelID, getActivePoll);
-  function getActivePoll(pollId) {
-    console.log('Current Active Pollid: ' + pollId);
-    dbActions.getPoll(pollId, setData);
-    activePoll = pollId;
-  }
+  pollId = 'activePoll_' + req.body.channel_id;
+  console.log('Incoming vote for: ' + voteText + '. pollId: ' + pollId + '\n');
 
+  dbActions.getPoll(pollId, setData);
   function setData(poll_string) {
-    var pollTitleOnly = false;
-    try {
-        data = JSON.parse(poll_string);
-    } catch (err) {
-        if (err && (err.name == 'SyntaxError')) {
-          // if active poll is not json parse-able, assume it's just the poll title
-          pollTitleOnly = true;
-        } else {
-          throw err;
-        }
-    }
-
-    console.log('poll prior to vote: ' + poll_string);
-    if (pollTitleOnly) {
-      pollnameText = poll_string;
-      poll =  {
-        pollName: pollnameText,
-        status: 1,
-        votes: [{
-          voteName: voteText,
-          voteCount: 1,
-        }]
-      };
-      data = poll;
-    } else {
+    console.log('Poll prior to vote: ' + poll_string);
+    if (poll_string) {
+      data = JSON.parse(poll_string);
       _.each(data.votes, function(vote) {
         if (voteText === vote.voteName) {
-          console.log('vote name matched!');
+          console.log('Vote name match.');
           vote.voteCount = vote.voteCount + 1;
           voteMatch = true;
         }
       });
       if (!voteMatch) {
-        console.log('No match, creating new poll option for: ' + voteText);
+        console.log('No poll option match, creating new poll option for: ' + voteText);
         newVote = {
           voteName: voteText,
           voteCount: 1
         };
-      data.votes.push(newVote);
+        data.votes.push(newVote);
       }
+      voteMatch = false;
+      dbActions.setPoll(pollId, JSON.stringify(data), handleResults);
+    } else {
+      data = {
+        'pollName': 'There is no active poll set for this channel, please use the "start" command to start a new poll',
+        'votes': []
+      };
+      handleResults();
     }
-    dbActions.setPoll(activePoll, JSON.stringify(data), handleResults);
   }
 
-  function handleResults(poll) {
+  function handleResults() {
     slackRes = tally.printPoll(data);
     res.json({text: slackRes});
   }

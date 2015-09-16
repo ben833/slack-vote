@@ -11,16 +11,17 @@ exports.post = function (req, res, next) {
 
   /*
    * Print active poll results.
+   * TBD: Needs to be refactored if we want to use this route
    */
-  dbActions.getActivePollId(fetchActivePoll);
-  function fetchActivePoll(pollId) {
-    console.log('Fetching active poll: ' + pollId);
-    dbActions.getPoll(pollId, printPoll);
-  }
-  function printPoll(data) {
-    slackRes = 'Here are the current votes: \n ' + tally.printPoll(JSON.parse(data));
-    console.log('printPoll: ' + slackRes);
-    res.json({text: slackRes});
-  }
+  // dbActions.getActivePollId(fetchActivePoll);
+  // function fetchActivePoll(pollId) {
+  //   console.log('Fetching active poll: ' + pollId);
+  //   dbActions.getPoll(pollId, printPoll);
+  // }
+  // function printPoll(data) {
+  //   slackRes = 'Here are the current votes: \n ' + tally.printPoll(JSON.parse(data));
+  //   console.log('printPoll: ' + slackRes);
+  //   res.json({text: slackRes});
+  // }
 
 };

@@ -24,35 +24,10 @@ if (process.env.REDISTOGO_URL) {
  */
 var dbActions = {
   /*
-   * Set active poll id.
-   */
-  setActivePoll: function(pollKey, callback) {
-    client.set('activePoll', pollKey, function (err, reply) {
-      if (reply) {
-        callback(reply);
-      }
-    });
-  },
-  /*
-   * Get active poll id.
-   */
-  getActivePollId: function(channelID, callback) {
-    console.log('Channel ID is: ' + channelID);
-    client.get('*' + channelID, function (err, reply) {
-      if (reply) {
-        callback(reply);
-      }
-      else {
-        callback(null);
-      }
-    });
-  },
-  /*
    * Set poll data.
    */
   setPoll: function(pollKey, pollData, callback) {
     client.set(pollKey, pollData, function (err, reply) {
-    // should this pass along something more useful than "ok" ?
       if (reply) {
         callback(reply);
       }
@@ -73,10 +48,10 @@ var dbActions = {
    */
   getPoll: function(pollId, callback) {
     client.get(pollId, function (err, reply) {
-      //console.log('fetching poll for you, id: ' + pollId);
       if (reply) {
-        //console.log('this get should not just be OK: ' + reply.toString());
         callback(reply);
+      } else {
+        callback(null);
       }
     });
   }
