@@ -8,7 +8,6 @@ var poll = ''
   , channelId = ''
   , pollnameText = ''
   , slackRes = ''
-  , client = ''
   , rtg = ''
   , newPollID = ''
   , ts = Math.floor(Date.now() / 1000);
@@ -29,52 +28,37 @@ exports.post = function(req, res, next) {
     'votes': []
   };
 
+  newPollID = 'activePoll_' + channelId;
+
   /*
-   * Persist new poll to reddis.
+   * Fetch and print current active poll.
    */
-  if (process.env.REDISTOGO_URL) {
-    rtg = require('url').parse(process.env.REDISTOGO_URL);
-    client = redis.createClient(rtg.port, rtg.hostname);
-    client.auth(rtg.auth.split(':')[1]);
-  } else {
-    client = redis.createClient();
+  dbActions.getPoll(newPollID, listActivePoll);
+  function listActivePoll(data) {
+    console.log('Current Active Poll: ' + data);
+    if (data === null) {
+      console.log('There is no current active poll, setting up new poll.');
+    } else {
+      console.log('Current poll is closing.');
+      slackRes = 'Closing Active Poll. Here were the results of the now-closed poll.\n' + tally.printPoll(JSON.parse(data)) + '\n';
+    }
   }
 
-  client.on('connect', function() {
+  /*
+   * Set new poll with the active poll id.
+   * Print confirmation and vote message.
+   */
+  console.log('Setting up new poll with ID: ' + newPollID);
+  dbActions.setPoll(newPollID, JSON.stringify(poll), printNewPoll);
 
-    console.log('connected to redis');
-    newPollID = 'activePoll_' + channelId;
+  function printNewPoll() {
+    console.log('New poll is set up with the ID: ' + newPollID);
+    dbActions.getPoll(newPollID, confirmNewPoll);
+  }
 
-    /*
-     * Fetch and print current active poll.
-     */
-    dbActions.getPoll(newPollID, listActivePoll);
-    function listActivePoll(data) {
-      console.log('Current Active Poll: ' + data);
-      if (data === null) {
-        console.log('There is no current active poll, setting up new poll.');
-      } else {
-        console.log('Current poll is closing.');
-        slackRes = 'Closing Active Poll. Here were the results of the now-closed poll.\n' + tally.printPoll(JSON.parse(data)) + '\n';
-      }
-    }
-
-    /*
-     * Set new poll with the active poll id.
-     * Print confirmation and vote message.
-     */
-    console.log('Setting up new poll with ID: ' + newPollID);
-    dbActions.setPoll(newPollID, JSON.stringify(poll), printNewPoll);
-
-    function printNewPoll() {
-      console.log('New poll is set up with the ID: ' + newPollID);
-      dbActions.getPoll(newPollID, confirmNewPoll);
-    }
-    function confirmNewPoll(data) {
-      slackRes += '\nYour poll is set up. Please start voting for ' + tally.printPoll(JSON.parse(data));
-      res.json({text: slackRes});
-    }
-
-  });
+  function confirmNewPoll(data) {
+    slackRes += '\nYour poll is set up. Please start voting for ' + tally.printPoll(JSON.parse(data));
+    res.json({text: slackRes});
+  }
 
 };
