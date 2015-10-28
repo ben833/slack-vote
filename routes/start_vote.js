@@ -25,7 +25,7 @@ exports.post = function(req, res, next) {
   pollnameText = pollnameText.replace(triggerWord + ' ','');
   poll = {
     'pollName': pollnameText,
-    'votes': []
+    'answers': []
   };
 
   newPollID = 'activePoll_' + channelId;

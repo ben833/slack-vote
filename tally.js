@@ -10,9 +10,9 @@ var tally = {
     // build the output
     pollResults = 'Current Poll: ' + data.pollName + ' ';
     pollResults += '\nResults: \n';
-    _.each(data.votes, function(vote) {
-      formattedVoteName = vote.voteName.capitalizeFirstLetter();
-      pollResults += formattedVoteName + ': ' + vote.voteCount + separator;
+    _.each(data.answers, function(answer) {
+      formattedAnswerName = answer.answerName.capitalizeFirstLetter();
+      pollResults += formattedAnswerName + ': ' + answer.votes.length + separator;
     });
 
     // Remove the last separator (newline) to avoid extra empty line
