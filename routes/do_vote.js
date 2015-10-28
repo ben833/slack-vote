@@ -6,11 +6,14 @@ var poll = ''
   , activePoll = ''
   , slackRes = ''
   , pollResults = ''
-  , voteText = ''
+  , answerText = ''
+  , userName = ''
+  , userID = ''
+  , timestamp = ''
   , channelID = ''
   , triggerWord = ''
   , data = undefined
-  , voteMatch = false;
+  , answerMatch = false;
 
 /*
  * Capitalize the first letter of each word.
@@ -29,38 +32,51 @@ String.prototype.capitalizeFirstLetter = function() {
  */
 exports.post = function (req, res, next) {
 
-  voteText = req.body.text;
   triggerWord = req.body.trigger_word;
-  voteText = voteText.replace(triggerWord + ' ','').toLowerCase();
+  answerText = req.body.text;
+  answerText = answerText.replace(triggerWord + ' ','').toLowerCase();
+  userName = req.body.user_name;
+  userID = req.body.user_id;
+  timestamp = req.body.timestamp;
   pollId = 'activePoll_' + req.body.channel_id;
-  console.log('Incoming vote for: ' + voteText + '. pollId: ' + pollId + '\n');
+
+  postedVote = {
+    'userName': userName,
+    'userID': userID,
+    'timestamp': timestamp
+  };
+
+  console.log('Incoming post. Answer text: ' + answerText + '. pollId: ' + pollId + '\n');
 
   dbActions.getPoll(pollId, setData);
   function setData(poll_string) {
-    console.log('Poll prior to vote: ' + poll_string);
+    console.log('Poll prior to submission: ' + poll_string);
     if (poll_string) {
       data = JSON.parse(poll_string);
-      _.each(data.votes, function(vote) {
-        if (voteText === vote.voteName) {
-          console.log('Vote name match.');
-          vote.voteCount = vote.voteCount + 1;
-          voteMatch = true;
+      _.each(data.answers, function(answer) {
+        if (answerText === answer.answerName) {
+          // there is a votes array already, because this isn't the first vote
+          answer.votes.push(postedVote);
+          answerMatch = true;
         }
       });
-      if (!voteMatch) {
-        console.log('No poll option match, creating new poll option for: ' + voteText);
-        newVote = {
-          voteName: voteText,
-          voteCount: 1
+
+      if (!answerMatch) {
+        console.log('No poll answer match, creating new poll answer for: ' + answerText);
+        newAnswer = {
+          answerName: answerText,
+          votes: new Array(postedVote)
         };
-        data.votes.push(newVote);
+        data.answers.push(newAnswer);
+        console.log('Poll after submission: ' + poll_string);
       }
-      voteMatch = false;
+      answerMatch = false; // not sure why this is here - ben833
       dbActions.setPoll(pollId, JSON.stringify(data), handleResults);
+      dbActions.getPoll(pollId, function(result_string){console.log('Poll after submission: ' + result_string);});
     } else {
       data = {
         'pollName': 'There is no active poll set for this channel, please use the "start" command to start a new poll',
-        'votes': []
+        'answers': []
       };
       handleResults();
     }
@@ -70,5 +86,4 @@ exports.post = function (req, res, next) {
     slackRes = tally.printPoll(data);
     res.json({text: slackRes});
   }
-
 };
