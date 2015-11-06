@@ -4,7 +4,7 @@ var data = ''
   , slackRes = ''
   , poll = ''
   , dbActions = require('./../persist.js')
-  ,channelId = '';
+  , channelId = '';
 
 exports.post = function (req, res, next) {
 
