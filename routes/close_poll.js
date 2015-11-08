@@ -7,27 +7,36 @@ var data = ''
   , channelId = '';
 
 exports.post = function (req, res, next) {
+  /*
+   * Get poll data.
+   */
+  triggerWord = req.body.trigger_word;
+  channelId = req.body.channel_id;
+  pollId = 'activePoll_' + channelId;
 
-  console.log('Close poll route.');
-  channelId = 'activePoll_' + req.body.channel_id;
+  console.log('About to close the poll for pollId: ' + pollId);
+  dbActions.getPoll(pollId, setData);
+  function setData(poll_string) {
+    if (poll_string) {
+      data = JSON.parse(poll_string);
+
+      // disallow more voting but save the data to keep some kind of an archive
+      data.active = 0;
+
+      closePoll(data);
+    }
+  }
 
   /*
-   * Print active poll and set activePoll to null
-   * TBD: Needs to be refactored if we want to use this route
+   * Print active poll
    */
-  // dbActions.getActivePollId(channelId);
-  // function fetchActivePoll(pollId) {
-  //   console.log('Fetching active poll: ' + pollId);
-  //   dbActions.getPoll(pollId, closePoll);
-  // }
-  // function closePoll(data) {
-  //   slackRes = 'Closing active poll. Here are the final results\n ' + tally.printPoll(JSON.parse(data));
-  //   console.log('closePoll: ' + slackRes);
-  //   dbActions.disablePolls(confirmClosePoll);
-  // }
-  // function confirmClosePoll(data) {
-  //   console.log('confirmClosePoll: ' + slackRes);
-  //   res.json({text: slackRes});
-  // }
-
+  function closePoll(data) {
+    slackRes = 'Closing active poll. Here are the final results\n ' + tally.printPoll(data);
+    console.log('closePoll: ' + slackRes);
+    dbActions.disablePoll(pollId, JSON.stringify(data), confirmClosePoll);
+  }
+  function confirmClosePoll(data) {
+    console.log('confirmClosePoll: ' + slackRes);
+    res.json({text: slackRes});
+  }
 };

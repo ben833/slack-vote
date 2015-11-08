@@ -25,6 +25,7 @@ exports.post = function(req, res, next) {
   pollnameText = pollnameText.replace(triggerWord + ' ','');
   poll = {
     'pollName': pollnameText,
+    'active': 1,
     'answers': []
   };
 

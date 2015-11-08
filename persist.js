@@ -23,6 +23,7 @@ if (process.env.REDISTOGO_URL) {
  * TBD: there should be error handling on all of these to handle no reply responses.
  */
 var dbActions = {
+
   /*
    * Set poll data.
    */
@@ -33,16 +34,23 @@ var dbActions = {
       }
     });
   },
+
   /*
-   * Disable all polls.
+   * Disable poll. The pollData var should have a field that sets the poll to inactive
    */
-  disablePolls: function(callback) {
-    client.set('activePoll', '', function (err, reply) {
+  disablePoll: function(pollKey, pollData, callback) {
+    client.set(pollKey, pollData, function (err, reply) {
+      if (err) {
+        console.log(pollKey);
+        console.log(pollData);
+        console.log(err);
+      }
       if (reply) {
         callback(reply);
       }
     });
   },
+
   /*
    * Get poll from id.
    */

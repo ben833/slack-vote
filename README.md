@@ -5,7 +5,7 @@ Slack users can now start a poll and vote in a slack channel, using the Slack AP
 ```
 start poll What's for Lunch?
 ```
-This allows voting to begin allows people to "write in" a choice by voting for an item. Other people can vote for the same phrase (case insensitive).
+This allows voting to begin. People can then "write in" a choice by voting for an item. Other people can vote for the same phrase (case insensitive).
 ```
 vote pizza
 ```
