@@ -53,32 +53,35 @@ exports.post = function (req, res, next) {
     console.log('Poll prior to submission: ' + poll_string);
     if (poll_string) {
       data = JSON.parse(poll_string);
-      _.each(data.answers, function(answer) {
-        if (answerText === answer.answerName) {
-          // there is a votes array already, because this isn't the first vote
-          answer.votes.push(postedVote);
-          answerMatch = true;
-        }
-      });
+      if (data.active == 1) {
+        _.each(data.answers, function(answer) {
+          if (answerText === answer.answerName) {
+            // there is a votes array already, because this isn't the first vote
+            answer.votes.push(postedVote);
+            answerMatch = true;
+          }
+        });
 
-      if (!answerMatch) {
-        console.log('No poll answer match, creating new poll answer for: ' + answerText);
-        newAnswer = {
-          answerName: answerText,
-          votes: new Array(postedVote)
-        };
-        data.answers.push(newAnswer);
-        console.log('Poll after submission: ' + poll_string);
+        if (!answerMatch) {
+          console.log('No poll answer match, creating new poll answer for: ' + answerText);
+          newAnswer = {
+            answerName: answerText,
+            votes: new Array(postedVote)
+          };
+          data.answers.push(newAnswer);
+          console.log('Poll after submission: ' + poll_string);
+        }
+        answerMatch = false; // not sure why this is here - ben833
+        dbActions.setPoll(pollId, JSON.stringify(data), handleResults);
+        dbActions.getPoll(pollId, function(result_string){console.log('Poll after submission: ' + result_string);});
       }
-      answerMatch = false; // not sure why this is here - ben833
-      dbActions.setPoll(pollId, JSON.stringify(data), handleResults);
-      dbActions.getPoll(pollId, function(result_string){console.log('Poll after submission: ' + result_string);});
-    } else {
-      data = {
-        'pollName': 'There is no active poll set for this channel, please use the "start" command to start a new poll',
-        'answers': []
-      };
-      handleResults();
+      else {
+        data = {
+          'pollName': 'There is no active poll set for this channel, please use the "start poll QUESTION" command to start a new poll',
+          'answers': []
+        };
+        handleResults();
+      }
     }
   }
 
