@@ -10,9 +10,18 @@ var redis = require('redis')
 
 /*
  * Set correct environment for redis.
+ *
+ * Lines 19-20 are for using Heroku Redis
+ * If using Heroku Redis, comment out lines 22-23 and uncomment lines 19-20
+ *
  */
+
+// if (process.env.REDIS_URL) {
+//   rtg = require('url').parse(process.env.REDIS_URL);
+
 if (process.env.REDISTOGO_URL) {
   rtg = require('url').parse(process.env.REDISTOGO_URL);
+
   client = redis.createClient(rtg.port, rtg.hostname);
   client.auth(rtg.auth.split(':')[1]);
 } else {

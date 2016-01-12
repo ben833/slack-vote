@@ -1,5 +1,5 @@
 # slack-vote
-A voting bot created with Node
+A voting bot created with Node, with easy deployment to Heroku
 
 Slack users can now start a poll and vote in a slack channel, using the Slack API, specifically Outgoing Integrations. Users are able to enter these commands in the room:
 ```
@@ -53,3 +53,30 @@ npm test
 * `sudo npm install`
 * Install redis locally - instructions here http://redis.io/topics/quickstart
 * See "To run this in terminal" above
+
+## Heroku Setup
+If using Heroku, you must have a credit card on file to use [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) (the most basic usage plan is free). 
+
+* Create a new Heroku app
+* Add the free [Heroku Redis add-on](https://elements.heroku.com/addons/heroku-redis) to this app
+* Comment and un-comment out the appropriate lines in `persist.js` (see line 12) for Heroku Redis to operate
+* Deploy to heroku
+* If the server is running properly, when you visit the address with a browser, it should say `Alive and well.` in plain text.
+
+## Slack Integration
+Once the server is up and running, you need to add to your organization's custom integrations. These can be found at https://your-organization.slack.com/apps/manage/custom-integrations 
+
+You'll need to add three outgoing webhook configurations:
+* your-slackvote-app.herokuapp.com/start
+* your-slackvote-app.herokuapp.com/vote
+* your-slackvote-app.herokuapp.com/close
+
+For each of these webhooks, you'll need to add a trigger word. The above usage example uses these three trigger words for each of the respective webhooks:
+* start poll
+* vote
+* close poll
+
+That's it! You should now have the voting system up and running!
+
+Note: You can customize the server's JSON responses to include slack text formatting such as `*bold*` and `_italics_` as well as any custom animated emojis your organization might have. Slack will parse the server text response as a normal slack text entry.
+
