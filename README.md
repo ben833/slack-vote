@@ -64,7 +64,7 @@ If using Heroku, you must have a credit card on file to use [Heroku Redis](https
 * If the server is running properly, when you visit the address with a browser, it should say `Alive and well.` in plain text.
 
 ## Slack Integration
-Once the server is up and running, you need to add to your organization's custom integrations. These can be found at https://your-organization.slack.com/apps/manage/custom-integrations 
+Once the server is up and running, you need to add to your organization's custom integrations. These can be found at https://my.slack.com/apps/manage/custom-integrations 
 
 You'll need to add three outgoing webhook configurations:
 * your-slackvote-app.herokuapp.com/start
