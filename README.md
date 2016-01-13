@@ -1,4 +1,4 @@
-<div align="center"><img src="http://i.imgur.com/zmvMFDO.png"/><br><br><img src="http://i.imgur.com/GU4eE21.gif"/></div><h4>Q: What is slack-vote?<br>A: A voting bot for Slack created with Node, with easy deployment to Heroku</h2><br><br>
+<div align="center"><img src="http://i.imgur.com/zmvMFDO.png"/><br><br><img src="http://i.imgur.com/GU4eE21.gif"/></div><h4>Q: What is slack-vote?<br>A: A voting bot for Slack created with Node, with easy deployment to Heroku</h2><br>
 
 With slack-vote, slack users can now start a poll and vote in a slack channel. Using the Slack API's Outgoing Integrations, users are able to enter these commands in the room:
 ```
@@ -28,15 +28,15 @@ close poll
 ---
 # Setup
 
-Getting slack-vote to work properly depends on two key components: the slack integrations and the back-end server. Using Heroku for the back-end is free, reliable, and easy.
+Getting slack-vote to work properly depends on two key components: the slack integrations and the back-end server. Using Heroku for the back-end is free, reliable, and easy to setup.
 
 ### Heroku Setup
-Note: You must have a credit card on file to use [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) (the most basic usage plan is free). 
+Note: You *must* have a credit card on file to use [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) (the most basic usage plan is free). 
 
 * Create a new Heroku app
 * Add the free [Heroku Redis add-on](https://elements.heroku.com/addons/heroku-redis) to this app
-* Deploy to heroku
-* If the server is running properly, when you visit the address with a browser, it should say `Alive and well.` in plain text.
+* Deploy the code from this slack-vote repo to Heroku
+* If the server is running properly, when you visit the address with a browser it should say `Alive and well.` in plain text.
 
 ### Slack Integration
 Once the server is up and running, you need to add to your organization's custom integrations. These can be found at https://my.slack.com/apps/manage/custom-integrations 
@@ -50,6 +50,8 @@ For each of these webhooks, you'll need to add a trigger word. The above usage e
 * start poll
 * vote
 * close poll
+
+You'll also have to choose your own image and bot name to appear when the server responses are published in your Slack channels. For consistency's sake, it makes sense to use the same image and bot name for each of the three webhook configurations.
 
 That's it! You should now have the voting system up and running!
 
@@ -69,7 +71,7 @@ redis-server
 export NODE_ENV=development
 node server.js
 ```
-After that first run, you can simply run
+After that first run, you can simply type:
 ```
 node server.js
 ```
