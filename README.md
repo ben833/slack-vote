@@ -1,4 +1,4 @@
-<div align="center"><img src="http://i.imgur.com/zmvMFDO.png"/><br><br><img src="http://i.imgur.com/GU4eE21.gif"/><h4>Q: What is slack-vote?<br>A: A voting bot for Slack created with Node, with easy deployment to Heroku</h2></div><br>
+<div align="center"><img src="http://i.imgur.com/zmvMFDO.png"/><br><br><img src="http://i.imgur.com/GU4eE21.gif"/></div><h4>Q: What is slack-vote?<br>A: A voting bot for Slack created with Node, with easy deployment to Heroku</h2><br><br>
 
 With slack-vote, slack users can now start a poll and vote in a slack channel. Using the Slack API's Outgoing Integrations, users are able to enter these commands in the room:
 ```
