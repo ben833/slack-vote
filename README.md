@@ -33,7 +33,7 @@ Getting slack-vote to work properly depends on two key components: the slack int
 ### Heroku Setup
 Note: You *must* have a credit card on file to use [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) (the most basic usage plan is free). 
 
-* Create a new Heroku app
+* Create a [new Heroku app](https://dashboard.heroku.com/new)
 * Add the free [Heroku Redis add-on](https://elements.heroku.com/addons/heroku-redis) to this app
 * Deploy the code from this slack-vote repo to Heroku
 * If the server is running properly, when you visit the address with a browser it should say `Alive and well.` in plain text.
