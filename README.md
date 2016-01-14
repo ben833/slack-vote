@@ -1,4 +1,4 @@
-<div align="center"><img src="http://i.imgur.com/zmvMFDO.png"/><br><br><img src="http://i.imgur.com/GU4eE21.gif"/></div><h4>Q: What is slack-vote?<br>A: A voting bot for Slack created with Node, with easy deployment to Heroku</h2><br>
+<div align="center"><img src="http://i.imgur.com/zmvMFDO.png"/><br><br><img src="http://i.imgur.com/GU4eE21.gif"/></div><h4>Q: What is slack-vote?<br>A: A voting bot for <a href='http://www.slack.com'>Slack</a> created with <a href="http://www.nodejs.org">Node</a> and <a href="http://expressjs.com/">Express</a>, with easy deployment to <a href="http://www.heroku.com">Heroku</a></h2><br>
 
 With slack-vote, slack users can now start a poll and vote in a slack channel. Using the Slack API's Outgoing Integrations, users are able to enter these commands in the room:
 ```
@@ -25,10 +25,12 @@ At the end of the voting session, someone is able to close the poll by entering 
 close poll
 ```
 
+*The server treats every Slack channel separately, so you can have concurrent polls on different subjects in multiple Slack channels.*
+
 ---
 # Setup
 
-Getting slack-vote to work properly depends on two key components: the slack integrations and the back-end server. Using Heroku for the back-end is free, reliable, and easy to setup.
+Getting slack-vote to work properly depends on two key components: the Slack integrations and the back-end server. Using Heroku for the back-end is free, reliable, and easy to setup.
 
 ### Heroku Setup
 Note: You *must* have a credit card on file to use [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) (the most basic usage plan is free). 
@@ -55,7 +57,7 @@ You'll also have to choose your own image and bot name to appear when the server
 
 That's it! You should now have the voting system up and running!
 
-Note: You can customize the server's JSON responses to include slack text formatting such as `*bold*` and `_italics_` as well as any custom animated emojis your organization might have. Slack will parse the server text response as a normal slack text entry.
+Note: You can customize the server's JSON responses to include Slack text formatting such as `*bold*` and `_italics_` as well as any custom animated emojis your organization might have. Slack will parse the server text response as a normal Slack text entry.
 
 ##If you don't plan on using Heroku
 
