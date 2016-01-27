@@ -1,0 +1,10 @@
+{
+  "name": "slack-vote",
+  "scripts": {
+  },
+  "env": {
+  },
+  "addons": [
+    "heroku-redis"
+  ]
+}
