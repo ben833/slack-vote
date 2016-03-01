@@ -1,7 +1,6 @@
-# slack-vote
-A voting bot created with Node
+<div align="center"><img src="http://i.imgur.com/zmvMFDO.png"/><br><br><img src="http://i.imgur.com/GU4eE21.gif"/></div><h4>Q: What is slack-vote?<br>A: A voting bot for <a href='http://www.slack.com'>Slack</a> created with <a href="http://www.nodejs.org">Node</a> and <a href="http://expressjs.com/">Express</a>, with easy deployment to <a href="http://www.heroku.com">Heroku</a></h2><br>
 
-Slack users can now start a poll and vote in a slack channel, using the Slack API, specifically Outgoing Integrations. Users are able to enter these commands in the room:
+With slack-vote, slack users can now start a poll and vote in a slack channel. Using the Slack API's Outgoing Integrations, users are able to enter these commands in the room:
 ```
 start poll What's for Lunch?
 ```
@@ -13,8 +12,6 @@ If there is not already a vote for Pizza, a new option for Pizza is created. If 
 
 The bot will then respond with the results of the vote so far:
 ```
-vote-bot    2:49pm
-
 Current Poll: What's for Lunch?
 Results:
 Chinese: 5
@@ -28,28 +25,60 @@ At the end of the voting session, someone is able to close the poll by entering 
 close poll
 ```
 
----
-## Developer Documentation
+*The server treats every Slack channel separately, so you can have concurrent polls on different subjects in multiple Slack channels.*
 
-To run this in terminal:
+---
+# Setup
+
+Getting slack-vote to work properly depends on two key components: the Slack integrations and the back-end server. Using Heroku for the back-end is free, reliable, and easy to setup.
+
+### Heroku Setup
+Note: You *must* have a credit card on file to use [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) (the most basic usage plan is free). 
+
+* Create a [new Heroku app](https://dashboard.heroku.com/new)
+* Add the free [Heroku Redis add-on](https://elements.heroku.com/addons/heroku-redis) to this app
+* Deploy the code from this slack-vote repo to Heroku
+* If the server is running properly, when you visit the address with a browser it should say `Alive and well.` in plain text.
+
+### Slack Integration
+Once the server is up and running, you need to add to your organization's custom integrations. These can be found at https://my.slack.com/apps/manage/custom-integrations 
+
+You'll need to add three outgoing webhook configurations:
+* your-slackvote-app.herokuapp.com/start
+* your-slackvote-app.herokuapp.com/vote
+* your-slackvote-app.herokuapp.com/close
+
+For each of these webhooks, you'll need to add a trigger word. The above usage example uses these three trigger words for each of the respective webhooks:
+* start poll
+* vote
+* close poll
+
+You'll also have to choose your own image and bot name to appear when the server responses are published in your Slack channels. For consistency's sake, it makes sense to use the same image and bot name for each of the three webhook configurations.
+
+That's it! You should now have the voting system up and running!
+
+Note: You can customize the server's JSON responses to include Slack text formatting such as `*bold*` and `_italics_` as well as any custom animated emojis your organization might have. Slack will parse the server text response as a normal Slack text entry.
+
+##If you don't plan on using Heroku
+
+* Comment out and un-comment the appropriate lines in `persist.js` (see line 12)
+* Install Node.js: https://nodejs.org/en/download/
+* In the terminal, run `sudo npm install`
+* Install Redis: http://redis.io/topics/quickstart
+* You should be ready to run this directly from the terminal
+
+To run this from a terminal for the first time:
 ```
 redis-server
 export NODE_ENV=development
 node server.js
 ```
-After the first run, you can simply run
+After that first run, you can simply type:
 ```
 node server.js
 ```
-
 
 To test this in terminal:
 ```
 npm test
 ```
-
-### Local Development Setup
-* Install node
-* `sudo npm install`
-* Install redis locally - instructions here http://redis.io/topics/quickstart
-* See "To run this in terminal" above

@@ -1,7 +1,7 @@
 {
-  "name": "node-learning",
-  "version": "1.0.0",
-  "description": "Create something with node",
+  "name": "slack-vote",
+  "version": "0.5.0",
+  "description": "A voting/polling backend for Slack outgoing webhook configurations",
   "main": "server.js",
   "scripts": {
     "test": "mocha tests/index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ben833/node-learning.git"
+    "url": "git+https://github.com/RF-Nelson/slack-vote.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ben833/node-learning/issues"
+    "url": "https://github.com/RF-Nelson/slack-vote.git/issues"
   },
-  "homepage": "https://github.com/ben833/node-learning#readme",
+  "homepage": "https://github.com/RF-Nelson/slack-vote#readme",
   "dependencies": {
     "body-parser": "^1.13.1",
     "express": "^4.13.0",
